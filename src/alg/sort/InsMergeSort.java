@@ -1,12 +1,12 @@
 package alg.sort;
 
-import Test.Main;
+import Test.Utils;
 
 public class InsMergeSort {
     public static void main(String[] args) {
-        int[] arr = Main.generateArr(100);
+        int[] arr = Utils.generateArr(100);
 
-        System.out.println(Main.isSorted(new InsMergeSort().sort(arr)));
+        System.out.println(Utils.isSorted(new InsMergeSort().sort(arr)));
     }
 
     public int[] sort(int[] arr) {

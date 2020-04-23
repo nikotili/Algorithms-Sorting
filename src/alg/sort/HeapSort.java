@@ -1,73 +1,80 @@
 package alg.sort;
 
+import Test.Utils;
+
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
+//todo comparison count
 public class HeapSort {
     public static void main(String[] args) {
-        final int[] arr = {4, 2, 6, 1, 5, 9, 8, 7, 3};
-        final int[] arr1 = {4, 2, 6, 1};
-        new HeapSort().heapify(arr);
-        new HeapSort().phase2(arr);
-        System.out.println(Arrays.toString(arr));
+        for (int i = 0; i < 10; i++) {
+            int[] arr = Utils.generateArr(1_000_000);
+            new HeapSort().heapSort(arr);
+            System.out.println(Utils.isSorted(arr));
+        }
     }
 
-    void heapify(int[] arr) {
+
+    private long heapSort(int[] arr) {
+        long comparisons = buildMaxHeap(arr);
+        comparisons += phase2(arr);
+        return comparisons;
+    }
+
+
+    // ok
+    private long buildMaxHeap(int[] arr) {
+        long comparisons = 0L;
         for (int heapSize = 0; heapSize < arr.length; heapSize++) {
             int currPos = heapSize;
             while (currPos > 0) {
-                int parentIndex = currPos / 2;
-                if (arr[currPos] >= arr[parentIndex]) break;
+                int parentIndex = (currPos - 1) / 2;
+                comparisons++;
+                if (arr[currPos] < arr[parentIndex]) break;
                 swap(arr, currPos, parentIndex);
                 currPos = parentIndex;
             }
         }
+        return comparisons;
     }
 
-    private void phase2(int[] heap) {
-        for (int sortedSize = 0; sortedSize < heap.length; sortedSize++) {
-            int sortedArrIndex = heap.length - sortedSize - 1;
-            swap(heap, 0, sortedArrIndex);
-            int currPos = 0;
-            int leftChildIndex;
-            int rightChildIndex;
-            while (true) {
-                leftChildIndex = currPos * 2 + 1;
-                rightChildIndex = leftChildIndex + 1;
-                if (leftChildIndex >= sortedArrIndex) break;
-                if (heap[leftChildIndex] > heap[currPos] && heap[rightChildIndex] > heap[currPos]) break;
 
-                if (rightChildIndex >= sortedArrIndex) {
-                    swap(heap, leftChildIndex, currPos);
-                    break;
-                }
-
-                if (heap[leftChildIndex] < heap[rightChildIndex]) {
-                    swap(heap, leftChildIndex, currPos);
-                    currPos = leftChildIndex;
-                } else {
-                    swap(heap, rightChildIndex, currPos);
-                    currPos = rightChildIndex;
-                }
-            }
+    private long phase2(int[] heap) {
+        long comparisons = 0;
+        for (int i = 0; i < heap.length - 1; i++) {
+            swap(heap, 0, heap.length - 1 - i);
+            siftDown(heap, heap.length - i - 1, 0);
         }
+
+        if (heap[0] > heap[1]) swap(heap, 0, 1);
+        return comparisons;
     }
 
-//    private void percolateDown(int[] heap, int bound, int currPos) {
-//        int leftChildIndex = currPos * 2 + 1;
-//        int rightChildIndex = leftChildIndex + 1;
-//
-//        if (leftChildIndex >= bound && rightChildIndex >= bound) return;
-//        if (heap[leftChildIndex] > heap[currPos] && heap[rightChildIndex] > heap[currPos]) return;
-//
-//        if (heap[leftChildIndex] < heap[rightChildIndex]) {
-//            swap(heap, leftChildIndex, currPos);
-//            percolateDown(heap, bound, leftChildIndex);
-//        } else {
-//            swap(heap, rightChildIndex, currPos);
-//            percolateDown(heap, bound, rightChildIndex);
-//        }
-//    }
+    private long siftDown(int[] heap, int length, int pos) {
+        long comparison = 0L;
+        int siftPos = getSiftPos(heap, length, pos);
+        if (siftPos != pos) {
+            swap(heap, pos, siftPos);
+            siftDown(heap, length, siftPos);
+        }
 
+        return comparison;
+    }
+
+    public int getSiftPos(int[] heap, int length, int pos) {
+        int leftChildPos = pos * 2 + 1;
+        int rightChildPos = leftChildPos + 1;
+        if ((pos > (length - 2) / 2)
+                || (heap[leftChildPos] < heap[pos]
+                && heap[rightChildPos] < heap[pos]))
+            return pos;
+
+        if (rightChildPos >= length)
+            return leftChildPos;
+
+        return heap[leftChildPos] > heap[rightChildPos] ? leftChildPos : rightChildPos;
+    }
 
     private void swap(int[] arr, int a, int b) {
         int t = arr[a];

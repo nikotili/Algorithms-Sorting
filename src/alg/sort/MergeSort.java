@@ -1,13 +1,13 @@
 package alg.sort;
 
-import Test.Main;
+import Test.Utils;
 
 public class MergeSort {
     public static void main(String[] args) {
-        int[] arr = Main.generateArr(100);
+        int[] arr = Utils.generateArr(100);
     }
 
-    public int[] sort(int[] arr) {
+    public int[] mergeSort(int[] arr) {
         if (arr.length > 1) {
             int[] leftArr = new int[arr.length / 2];
             int[] rightArr = new int[arr.length - leftArr.length];
@@ -18,7 +18,7 @@ public class MergeSort {
                     rightArr[i - leftArr.length] = arr[i];
                 }
             }
-            return merge(sort(leftArr), sort(rightArr));
+            return merge(mergeSort(leftArr), mergeSort(rightArr));
         }
         return arr;
     }

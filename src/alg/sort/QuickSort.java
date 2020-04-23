@@ -1,35 +1,44 @@
 package alg.sort;
 
-import Test.Main;
-
-import java.util.Arrays;
-
+import Test.Utils;
+// ok
 public class QuickSort {
     public static void main(String[] args) {
-        final int[] arr = {4, 2, 6, 1, 5, 9, 8, 7, 3};
-        new QuickSort().sort(arr, 0, arr.length - 1);
-
-        System.out.println(Arrays.toString(arr));
+        final int[] arr = Utils.generateArr(1000);
+        System.out.println(new QuickSort().quickSort(arr));
+        System.out.println(Utils.isSorted(arr));
     }
 
-    void sort(int[] arr, int start, int end) {
-        if (start >= end) return;
-        int pivotPos = partition(arr, start, end, Main.generateRandomInclusive(start, end));
-        sort(arr, start, pivotPos - 1);
-        sort(arr, pivotPos + 1, end);
+    private long quickSort(int[] arr) {
+        return quickSort(arr, 0, arr.length - 1);
     }
 
-    int partition(int[] arr, int start, int end, int pivotPos) {
+    long quickSort(int[] arr, int start, int end) {
+        if (start >= end) return 0;
+
+        final long[] partitionResult = partition(arr, start, end, Utils.generateRandomInclusive(start, end));
+        int pivotPos = (int) partitionResult[0];
+        long comparisons = partitionResult[1];
+
+        comparisons += quickSort(arr, start, pivotPos - 1);
+        comparisons += quickSort(arr, pivotPos + 1, end);
+
+        return comparisons;
+    }
+
+    private long[] partition(int[] arr, int start, int end, int pivotPos) {
+        long comparisons = 0L;
         int pivotVal = arr[pivotPos];
         swap(arr, pivotPos, end);
         int leftPos = start;
         for (int i = start; i < end; i++) {
+            comparisons++;
             if (arr[i] < pivotVal) {
                 swap(arr, leftPos++, i);
             }
         }
         swap(arr, leftPos, end);
-        return leftPos;
+        return new long[] {leftPos, comparisons};
     }
 
     private void swap(int[] arr, int a, int b) {
