@@ -1,15 +1,11 @@
 package alg.sort;
 
+import Test.Sorter;
 import Test.Utils;
 // ok
 public class QuickSort {
-    public static void main(String[] args) {
-        final int[] arr = Utils.generateArr(1000);
-        System.out.println(new QuickSort().quickSort(arr));
-        System.out.println(Utils.isSorted(arr));
-    }
 
-    private long quickSort(int[] arr) {
+    public long quickSort(int[] arr) {
         return quickSort(arr, 0, arr.length - 1);
     }
 

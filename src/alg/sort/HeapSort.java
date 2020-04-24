@@ -1,29 +1,19 @@
 package alg.sort;
 
-import Test.Utils;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 //todo comparison count
 public class HeapSort {
     public static void main(String[] args) {
-        for (int i = 0; i < 10; i++) {
-            int[] arr = Utils.generateArr(1_000_000);
-            new HeapSort().heapSort(arr);
-            System.out.println(Utils.isSorted(arr));
-        }
+
     }
 
 
-    private long heapSort(int[] arr) {
+    public long heapSort(int[] arr) {
         long comparisons = buildMaxHeap(arr);
-        comparisons += phase2(arr);
+        comparisons += doSort(arr);
         return comparisons;
     }
 
 
-    // ok
     private long buildMaxHeap(int[] arr) {
         long comparisons = 0L;
         for (int heapSize = 0; heapSize < arr.length; heapSize++) {
@@ -40,40 +30,54 @@ public class HeapSort {
     }
 
 
-    private long phase2(int[] heap) {
+    private long doSort(int[] heap) {
         long comparisons = 0;
         for (int i = 0; i < heap.length - 1; i++) {
             swap(heap, 0, heap.length - 1 - i);
-            siftDown(heap, heap.length - i - 1, 0);
+            comparisons += siftDown(heap, heap.length - i - 1, 0);
         }
-
+        comparisons++;
         if (heap[0] > heap[1]) swap(heap, 0, 1);
         return comparisons;
     }
 
     private long siftDown(int[] heap, int length, int pos) {
         long comparison = 0L;
-        int siftPos = getSiftPos(heap, length, pos);
+        final long[] siftPosResult = getSiftPos(heap, length, pos);
+        int siftPos = (int) siftPosResult[0];
+        comparison += siftPosResult[1];
         if (siftPos != pos) {
+            comparison++;
             swap(heap, pos, siftPos);
-            siftDown(heap, length, siftPos);
+            comparison += siftDown(heap, length, siftPos);
         }
 
         return comparison;
     }
 
-    public int getSiftPos(int[] heap, int length, int pos) {
+
+    /**
+     *
+     * @param heap
+     * @param length
+     * @param pos
+     * @return array which contains the SiftPos at index 0
+     * and the number of comparisons at index 1
+     */
+    public long[] getSiftPos(int[] heap, int length, int pos) {
         int leftChildPos = pos * 2 + 1;
         int rightChildPos = leftChildPos + 1;
         if ((pos > (length - 2) / 2)
                 || (heap[leftChildPos] < heap[pos]
                 && heap[rightChildPos] < heap[pos]))
-            return pos;
+            return new long[] {pos, 1};
 
         if (rightChildPos >= length)
-            return leftChildPos;
+            return new long[] {leftChildPos, 2};
 
-        return heap[leftChildPos] > heap[rightChildPos] ? leftChildPos : rightChildPos;
+        return heap[leftChildPos] > heap[rightChildPos]
+                ? new long[] {leftChildPos, 3}
+                : new long[] {rightChildPos, 3};
     }
 
     private void swap(int[] arr, int a, int b) {

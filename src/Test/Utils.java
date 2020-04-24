@@ -1,14 +1,29 @@
 package Test;
 
+import alg.sort.HeapSort;
+import alg.sort.InsMergeSort;
+import alg.sort.MergeSort;
+import alg.sort.QuickSort;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class Utils {
+
+    public static void main(String[] args) {
+        Sorter quickSorter = arr -> new QuickSort().quickSort(arr);
+        Sorter heapSorter = arr -> new HeapSort().heapSort(arr);
+        Sorter mergeSorter = arr -> new MergeSort().mergeSort(arr);
+        Sorter insMergeSorter = arr -> new InsMergeSort().insMergeSort(arr);
+
+        testSortingAlg(insMergeSorter, 10_000);
+    }
 
     public static int[] generateArr(int length) {
         final SecureRandom secureRandom = new SecureRandom();
@@ -16,7 +31,7 @@ public class Utils {
         int[] sourceArr = new int[length];
 
         for (int i = 0; i < sourceArr.length; i++) {
-            sourceArr[i] = secureRandom.nextInt(1_000_000);
+            sourceArr[i] = secureRandom.nextInt(Integer.MAX_VALUE);
         }
         return sourceArr;
     }
@@ -31,6 +46,16 @@ public class Utils {
                 return false;
         }
         return true;
+    }
+
+    public static void testSortingAlg(Sorter sorter, int arrLength) {
+        final String s = "Comparisons: ";
+        for (int i = 0; i < 100; i++) {
+            int[] arr = generateArr(arrLength);
+//            Instant start = Instant.now();
+            System.out.println(sorter.sort(arr));
+//            System.out.println(Instant.now().toEpochMilli() - start.toEpochMilli());
+        }
     }
 
     public static boolean isMaxHeap(int arr[], int n) {

@@ -3,14 +3,20 @@ package alg.sort;
 import Test.Utils;
 
 public class InsMergeSort {
+
+    private long comparisons;
+
     public static void main(String[] args) {
         int[] arr = Utils.generateArr(100);
-
-        System.out.println(Utils.isSorted(new InsMergeSort().sort(arr)));
     }
 
-    public int[] sort(int[] arr) {
-        if (arr.length > 10) {
+    public long insMergeSort(int[] arr) {
+        arr = doSort(arr);
+        return comparisons;
+    }
+
+    public int[] doSort(int[] arr) {
+        if (arr.length > 5) {
             int[] leftArr = new int[arr.length / 2];
             int[] rightArr = new int[arr.length - leftArr.length];
             for (int i = 0; i < arr.length; i++) {
@@ -20,32 +26,36 @@ public class InsMergeSort {
                     rightArr[i - leftArr.length] = arr[i];
                 }
             }
-            return merge(sort(leftArr), sort(rightArr));
+            return merge(doSort(leftArr), doSort(rightArr));
         } else insertionSort(arr);
         return arr;
     }
 
     public int[] merge(int[] leftArr, int[] rightArr) {
-        if (leftArr.length == 0) return rightArr;
-        if (rightArr.length == 0) return leftArr;
         int[] retArr = new int[leftArr.length + rightArr.length];
-        int leftIndex = 0;
-        int rightIndex = 0;
-        for (int i = 0; i < retArr.length; i++) {
-            if (leftIndex >= leftArr.length) {
-                retArr[i] = rightArr[rightIndex++];
-                continue;
-            }
-            if (rightIndex >= rightArr.length) {
-                retArr[i] = leftArr[leftIndex++];
-                continue;
-            }
-            if (leftArr[leftIndex] <= rightArr[rightIndex]) {
-                retArr[i] = leftArr[leftIndex++];
+        int k = 0;
+        int i = 0;
+        int j = 0;
+        while (i < leftArr.length && j < rightArr.length) {
+            comparisons++;
+            if (leftArr[i] <= rightArr[j]) {
+                retArr[k] = leftArr[i++];
             } else {
-                retArr[i] = rightArr[rightIndex++];
+                retArr[k] = rightArr[j++];
+            }
+            k++;
+        }
+
+        if (i == leftArr.length) {
+            while (j < rightArr.length) {
+                retArr[k++] = rightArr[j++];
+            }
+        } else {
+            while (i < leftArr.length) {
+                retArr[k++] = leftArr[i++];
             }
         }
+
         return retArr;
     }
 
@@ -53,6 +63,7 @@ public class InsMergeSort {
         for (int i = 1; i < arr.length; i++) {
             int key = arr[i];
             for (int j = i - 1; j >= 0; j--) {
+                comparisons++;
                 if (key >= arr[j]) {
                     arr[j + 1] = key;
                     break;
@@ -61,7 +72,6 @@ public class InsMergeSort {
                     arr[j] = key;
                 }
             }
-
         }
     }
 }
