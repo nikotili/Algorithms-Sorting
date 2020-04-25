@@ -5,14 +5,11 @@ import alg.sort.InsMergeSort;
 import alg.sort.MergeSort;
 import alg.sort.QuickSort;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
-import java.time.Instant;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class Utils {
 
@@ -21,8 +18,13 @@ public class Utils {
         Sorter heapSorter = arr -> new HeapSort().heapSort(arr);
         Sorter mergeSorter = arr -> new MergeSort().mergeSort(arr);
         Sorter insMergeSorter = arr -> new InsMergeSort().insMergeSort(arr);
+        System.out.println("length= 100");
+        testSortingAlg(heapSorter, 100);
+        for (int length = 500; length <= 10_000; length += 500) {
+            System.out.println("length= " + length);
+            testSortingAlg(heapSorter, length);
+        }
 
-        testSortingAlg(insMergeSorter, 10_000);
     }
 
     public static int[] generateArr(int length) {
@@ -34,6 +36,16 @@ public class Utils {
             sourceArr[i] = secureRandom.nextInt(Integer.MAX_VALUE);
         }
         return sourceArr;
+    }
+
+    public static int[] generateWorstCaseArr(int length) {
+        int[] arr = new int[length];
+        int j = 0;
+        for (int i = length; i > 0; i--) {
+            arr[j++] = i;
+        }
+
+        return arr;
     }
 
     public static int generateRandomInclusive(int from, int to) {
@@ -50,12 +62,17 @@ public class Utils {
 
     public static void testSortingAlg(Sorter sorter, int arrLength) {
         final String s = "Comparisons: ";
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             int[] arr = generateArr(arrLength);
 //            Instant start = Instant.now();
             System.out.println(sorter.sort(arr));
 //            System.out.println(Instant.now().toEpochMilli() - start.toEpochMilli());
         }
+    }
+
+    public static void testSortingAlgInWorstCase(Sorter sorter, int arrLength) {
+            int[] arr = generateWorstCaseArr(arrLength);
+            System.out.println(sorter.sort(arr));
     }
 
     public static boolean isMaxHeap(int arr[], int n) {

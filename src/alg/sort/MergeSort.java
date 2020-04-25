@@ -7,7 +7,7 @@ public class MergeSort {
     private long comparisons;
 
     public static void main(String[] args) {
-        int[] arr = new int[] {12, 4, 16, 7, 9, 5, 4, 10, 7, 18, 13, 11, 6, 1, 11};
+        int[] arr = new int[] {};
     }
 
 

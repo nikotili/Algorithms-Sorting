@@ -2,12 +2,23 @@ package alg.sort;
 
 import Test.Utils;
 
+import java.util.Arrays;
+
 public class InsMergeSort {
 
     private long comparisons;
 
     public static void main(String[] args) {
-        int[] arr = Utils.generateArr(100);
+        int[] arr = new int[100];
+        int j = 0;
+        for (int i = 99; i >= 0; i--) {
+            arr[j++] = i;
+        }
+        final InsMergeSort insMergeSort = new InsMergeSort();
+        insMergeSort.insertionSort(arr);
+        System.out.println(Utils.isSorted(arr));
+        System.out.println(Arrays.toString(arr));
+        System.out.println(insMergeSort.comparisons);
     }
 
     public long insMergeSort(int[] arr) {
@@ -60,18 +71,15 @@ public class InsMergeSort {
     }
 
     private void insertionSort(int[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            int key = arr[i];
-            for (int j = i - 1; j >= 0; j--) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int key = arr[i + 1];
+            int j = i;
+            while (j >= 0 && arr[j] > key) {
                 comparisons++;
-                if (key >= arr[j]) {
-                    arr[j + 1] = key;
-                    break;
-                } else {
-                    arr[j + 1] = arr[j];
-                    arr[j] = key;
-                }
+                arr[j + 1] = arr[j];
+                j--;
             }
+            arr[j + 1] = key;
         }
     }
 }

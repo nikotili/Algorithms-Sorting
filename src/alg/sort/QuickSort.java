@@ -1,9 +1,22 @@
 package alg.sort;
 
-import Test.Sorter;
 import Test.Utils;
+
+import java.util.Arrays;
+
 // ok
 public class QuickSort {
+
+    public static void main(String[] args) {
+        int[] arr = new int[10000];
+        for (int i = 0; i < 10000; i++) {
+            arr[i] = i;
+        }
+
+        System.out.println(new QuickSort().quickSort(arr));
+        System.out.println(Utils.isSorted(arr));
+        System.out.println(Arrays.toString(arr));
+    }
 
     public long quickSort(int[] arr) {
         return quickSort(arr, 0, arr.length - 1);
@@ -34,7 +47,7 @@ public class QuickSort {
             }
         }
         swap(arr, leftPos, end);
-        return new long[] {leftPos, comparisons};
+        return new long[]{leftPos, comparisons};
     }
 
     private void swap(int[] arr, int a, int b) {
