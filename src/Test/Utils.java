@@ -17,7 +17,7 @@ public class Utils {
         Sorter quickSorter = arr -> new QuickSort().quickSort(arr);
         Sorter heapSorter = arr -> new HeapSort().heapSort(arr);
         Sorter mergeSorter = arr -> new MergeSort().mergeSort(arr);
-        Sorter insMergeSorter = arr -> new InsMergeSort(5).insMergeSort(arr);
+        Sorter insMergeSorter = arr -> new InsMergeSort().insMergeSort(arr);
         System.out.println("length= 100");
         testSortingAlg(heapSorter, 100);
         for (int length = 500; length <= 10_000; length += 500) {
@@ -62,7 +62,7 @@ public class Utils {
 
     public static void testSortingAlg(Sorter sorter, int arrLength) {
         final String s = "Comparisons: ";
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             int[] arr = generateArr(arrLength);
 //            Instant start = Instant.now();
             System.out.println(sorter.sort(arr));

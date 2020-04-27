@@ -7,9 +7,13 @@ public class MergeSort {
     private long comparisons;
 
     public static void main(String[] args) {
-        int[] arr = new int[] {};
-    }
+        int[] arr = {1, 9, 5, 13, 3, 11, 7, 15, 2, 10, 6, 14, 4, 12, 8, 16};
+        int[] arr1 = Utils.generateArr(16);
 
+        System.out.println(Math.log(16)/Math.log(2) * 16);
+
+//        System.out.println(new MergeSort().mergeSort(arr1));
+    }
 
     public long mergeSort(int[] arr) {
         arr = doSort(arr);

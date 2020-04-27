@@ -4,10 +4,9 @@ import Test.Utils;
 
 import java.util.Arrays;
 
-//todo comparison count
 public class HeapSort {
     public static void main(String[] args) {
-        int[] arr = new int[]{12, 4, 16, 7, 9, 5, 4, 10, 7, 18, 13, 11, 6, 1, 11};
+        int[] arr = Utils.generateArr(100);
         int[] arr1 = new int[]{5, 4, 7, 2};
         System.out.println(new HeapSort().heapSort(arr));
         System.out.println(Arrays.toString(arr));
@@ -24,7 +23,7 @@ public class HeapSort {
 
     private long buildMaxHeap(int[] arr) {
         long comparisons = 0L;
-        for (int heapSize = 0; heapSize < arr.length; heapSize++) {
+        for (int heapSize = 1; heapSize < arr.length; heapSize++) {
             int currPos = heapSize;
             while (currPos > 0) {
                 int parentIndex = (currPos - 1) / 2;
@@ -55,19 +54,31 @@ public class HeapSort {
         int leftChildPos = pos * 2 + 1;
         int rightChildPos = leftChildPos + 1;
 
-        if (heap[leftChildPos] < heap[pos] && heap[rightChildPos] < heap[pos])
-            return ++comparisons;
-
         int siftPos;
         if (rightChildPos >= length) {
-            siftPos = leftChildPos;
+            comparisons++;
+            if (heap[leftChildPos] > heap[pos])
+                siftPos = leftChildPos;
+
+            else return comparisons;
         } else {
             comparisons++;
-            siftPos = heap[leftChildPos] > heap[rightChildPos]
-                    ? leftChildPos
-                    : rightChildPos;
-        }
+            if (heap[leftChildPos] > heap[rightChildPos]) {
+                comparisons++;
+                if (heap[leftChildPos] > heap[pos])
+                    siftPos = leftChildPos;
 
+                else return comparisons;
+            }
+
+            else {
+                comparisons++;
+                if (heap[rightChildPos] > heap[pos])
+                    siftPos = rightChildPos;
+
+                else return comparisons;
+            }
+        }
         comparisons++;
         swap(heap, pos, siftPos);
         comparisons += siftDown(heap, length, siftPos);
