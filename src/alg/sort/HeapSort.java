@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class HeapSort {
     public static void main(String[] args) {
-        int[] arr = Utils.generateArr(100);
-        int[] arr1 = new int[]{5, 4, 7, 2};
+        int[] arr = Utils.generateArr(10_000);
+        int[] arr1 = new int[]{5, 4, 7, 2,5,3,6,7,2,8,9,234,2};
         System.out.println(new HeapSort().heapSort(arr));
         System.out.println(Arrays.toString(arr));
         System.out.println(Utils.isSorted(arr));
@@ -54,32 +54,19 @@ public class HeapSort {
         int leftChildPos = pos * 2 + 1;
         int rightChildPos = leftChildPos + 1;
 
-        int siftPos;
-        if (rightChildPos >= length) {
+        int siftPos = pos;
+        if (rightChildPos < length) {
             comparisons++;
-            if (heap[leftChildPos] > heap[pos])
-                siftPos = leftChildPos;
-
-            else return comparisons;
-        } else {
-            comparisons++;
-            if (heap[leftChildPos] > heap[rightChildPos]) {
-                comparisons++;
-                if (heap[leftChildPos] > heap[pos])
-                    siftPos = leftChildPos;
-
-                else return comparisons;
-            }
-
-            else {
-                comparisons++;
-                if (heap[rightChildPos] > heap[pos])
-                    siftPos = rightChildPos;
-
-                else return comparisons;
-            }
+            if (heap[rightChildPos] > heap[siftPos])
+                siftPos = rightChildPos;
         }
+
         comparisons++;
+        if (heap[leftChildPos] > heap[siftPos])
+            siftPos = leftChildPos;
+
+        if (siftPos == pos) return comparisons;
+
         swap(heap, pos, siftPos);
         comparisons += siftDown(heap, length, siftPos);
 
