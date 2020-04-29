@@ -6,7 +6,8 @@ public class InsMergeSort {
     private long comparisons;
 
     public long insMergeSort(int[] arr) {
-        arr = doSort(arr);
+        comparisons = 0;
+        doSort(arr);
         return comparisons;
     }
 
@@ -22,7 +23,7 @@ public class InsMergeSort {
                 }
             }
             return merge(doSort(leftArr), doSort(rightArr));
-        } else comparisons += insertionSort(arr);
+        } else insertionSort(arr);
         return arr;
     }
 
@@ -54,8 +55,7 @@ public class InsMergeSort {
         return retArr;
     }
 
-    public long insertionSort(int[] arr) {
-        long comparisons = 0L;
+    public void insertionSort(int[] arr) {
         for (int i = 0; i < arr.length - 1; i++) {
             int key = arr[i + 1];
             int j = i;
@@ -66,6 +66,5 @@ public class InsMergeSort {
             }
             arr[j + 1] = key;
         }
-        return comparisons;
     }
 }

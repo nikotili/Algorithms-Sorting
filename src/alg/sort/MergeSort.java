@@ -16,7 +16,8 @@ public class MergeSort {
     }
 
     public long mergeSort(int[] arr) {
-        arr = doSort(arr);
+        comparisons = 0;
+        doSort(arr);
         return comparisons;
     }
 

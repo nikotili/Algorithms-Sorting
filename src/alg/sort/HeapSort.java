@@ -5,6 +5,7 @@ import Test.Utils;
 import java.util.Arrays;
 
 public class HeapSort {
+    private long comparisons;
     public static void main(String[] args) {
         int[] arr = Utils.generateArr(10_000);
         int[] arr1 = new int[]{5, 4, 7, 2,5,3,6,7,2,8,9,234,2};
@@ -15,14 +16,14 @@ public class HeapSort {
 
 
     public long heapSort(int[] arr) {
-        long comparisons = buildMaxHeap(arr);
-        comparisons += doSort(arr);
+        comparisons = 0;
+        buildMaxHeap(arr);
+        doSort(arr);
         return comparisons;
     }
 
 
-    private long buildMaxHeap(int[] arr) {
-        long comparisons = 0L;
+    private void buildMaxHeap(int[] arr) {
         for (int heapSize = 1; heapSize < arr.length; heapSize++) {
             int currPos = heapSize;
             while (currPos > 0) {
@@ -33,24 +34,20 @@ public class HeapSort {
                 currPos = parentIndex;
             }
         }
-        return comparisons;
     }
 
 
-    private long doSort(int[] heap) {
-        long comparisons = 0;
+    private void doSort(int[] heap) {
         for (int i = 0; i < heap.length - 1; i++) {
             swap(heap, 0, heap.length - 1 - i);
-            comparisons += siftDown(heap, heap.length - i - 1, 0);
+            siftDown(heap, heap.length - i - 1, 0);
         }
         comparisons++;
         if (heap[0] > heap[1]) swap(heap, 0, 1);
-        return comparisons;
     }
 
-    private long siftDown(int[] heap, int length, int pos) {
-        long comparisons = 0L;
-        if (pos > (length - 2) / 2) return comparisons;
+    private void siftDown(int[] heap, int length, int pos) {
+        if (pos > (length - 2) / 2) return;
         int leftChildPos = pos * 2 + 1;
         int rightChildPos = leftChildPos + 1;
 
@@ -65,12 +62,10 @@ public class HeapSort {
         if (heap[leftChildPos] > heap[siftPos])
             siftPos = leftChildPos;
 
-        if (siftPos == pos) return comparisons;
+        if (siftPos == pos) return;
 
         swap(heap, pos, siftPos);
-        comparisons += siftDown(heap, length, siftPos);
-
-        return comparisons;
+        siftDown(heap, length, siftPos);
     }
 
     private void swap(int[] arr, int a, int b) {

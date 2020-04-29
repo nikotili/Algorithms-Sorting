@@ -18,11 +18,10 @@ public class Utils {
         Sorter heapSorter = arr -> new HeapSort().heapSort(arr);
         Sorter mergeSorter = arr -> new MergeSort().mergeSort(arr);
         Sorter insMergeSorter = arr -> new InsMergeSort().insMergeSort(arr);
-        System.out.println("length= 100");
-        testSortingAlg(heapSorter, 100);
-        for (int length = 500; length <= 10_000; length += 500) {
+
+        for (int length = 10_000; length <= 100_000; length += 10_000) {
             System.out.println("length= " + length);
-            testSortingAlg(heapSorter, length);
+            testSortingAlg(quickSorter, length);
         }
 
     }
@@ -75,7 +74,7 @@ public class Utils {
             System.out.println(sorter.sort(arr));
     }
 
-    public static boolean isMaxHeap(int arr[], int n) {
+    public static boolean isMaxHeap(int[] arr, int n) {
         for (int i = 0; i <= (n - 2) / 2; i++) {
             if (arr[2 * i + 1] > arr[i]) {
                 return false;
