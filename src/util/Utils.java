@@ -5,8 +5,10 @@ import alg.sort.InsMergeSort;
 import alg.sort.MergeSort;
 import alg.sort.QuickSort;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -23,8 +25,11 @@ public class Utils {
                     .mapToInt(Integer::parseInt)
                     .toArray();
 
+        } catch (NoSuchFileException e) {
+            System.err.println("No such file: " + e.getMessage());
+            System.exit(0);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
             System.exit(0);
         }
 

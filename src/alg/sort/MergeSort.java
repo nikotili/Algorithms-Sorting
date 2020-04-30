@@ -7,6 +7,10 @@ public class MergeSort {
     private long comparisons;
 
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.err.println("Please specify a path");
+            return;
+        }
         int[] arr = Utils.extractArrayFrom(args[0]);
         System.out.println("Comparisons: " + new MergeSort().mergeSort(arr));
     }
