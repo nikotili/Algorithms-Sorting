@@ -1,13 +1,23 @@
 package alg.sort;
 
+import util.Utils;
+
+import java.util.Arrays;
+
 public class InsMergeSort {
 
     private final int M = 6;
     private long comparisons;
 
+    public static void main(String[] args) {
+        int[] arr = Utils.extractArrayFrom(args[0]);
+        System.out.println("Comparisons: " + new InsMergeSort().insMergeSort(arr));
+    }
+
     public long insMergeSort(int[] arr) {
         comparisons = 0;
-        doSort(arr);
+        int[] sorted = doSort(arr);
+        System.arraycopy(sorted, 0, arr, 0, arr.length);
         return comparisons;
     }
 
@@ -59,8 +69,9 @@ public class InsMergeSort {
         for (int i = 0; i < arr.length - 1; i++) {
             int key = arr[i + 1];
             int j = i;
-            while (j >= 0 && arr[j] > key) {
+            while (j >= 0) {
                 comparisons++;
+                if (arr[j] <= key) break;
                 arr[j + 1] = arr[j];
                 j--;
             }

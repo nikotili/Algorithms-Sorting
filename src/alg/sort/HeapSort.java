@@ -1,17 +1,14 @@
 package alg.sort;
 
-import Test.Utils;
+import util.Utils;
 
 import java.util.Arrays;
 
 public class HeapSort {
     private long comparisons;
     public static void main(String[] args) {
-        int[] arr = Utils.generateArr(10_000);
-        int[] arr1 = new int[]{5, 4, 7, 2,5,3,6,7,2,8,9,234,2};
-        System.out.println(new HeapSort().heapSort(arr));
-        System.out.println(Arrays.toString(arr));
-        System.out.println(Utils.isSorted(arr));
+        int[] arr = Utils.extractArrayFrom(args[0]);
+        System.out.println("Comparisons: " + new HeapSort().heapSort(arr));
     }
 
 

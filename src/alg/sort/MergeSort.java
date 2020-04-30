@@ -1,23 +1,20 @@
 package alg.sort;
 
-import Test.Utils;
+import util.Utils;
 
 public class MergeSort {
 
     private long comparisons;
 
     public static void main(String[] args) {
-        int[] arr = {1, 9, 5, 13, 3, 11, 7, 15, 2, 10, 6, 14, 4, 12, 8, 16};
-        int[] arr1 = Utils.generateArr(16);
-
-        System.out.println(Math.log(16)/Math.log(2) * 16);
-
-//        System.out.println(new MergeSort().mergeSort(arr1));
+        int[] arr = Utils.extractArrayFrom(args[0]);
+        System.out.println("Comparisons: " + new MergeSort().mergeSort(arr));
     }
 
     public long mergeSort(int[] arr) {
         comparisons = 0;
-        doSort(arr);
+        int[] sorted = doSort(arr);
+        System.arraycopy(sorted, 0, arr, 0, arr.length);
         return comparisons;
     }
 

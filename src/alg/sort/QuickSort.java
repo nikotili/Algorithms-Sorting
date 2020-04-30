@@ -1,23 +1,16 @@
 package alg.sort;
 
-import Test.Utils;
+import util.Utils;
 
-import java.util.Arrays;
+import java.security.SecureRandom;
 
-// ok
 public class QuickSort {
 
     private long comparisons;
 
     public static void main(String[] args) {
-        int[] arr = new int[10000];
-        for (int i = 0; i < 10000; i++) {
-            arr[i] = i;
-        }
-
-        System.out.println(new QuickSort().quickSort(arr));
-        System.out.println(Utils.isSorted(arr));
-        System.out.println(Arrays.toString(arr));
+        int[] arr = Utils.extractArrayFrom(args[0]);
+        System.out.println("Comparisons: " + new QuickSort().quickSort(arr));
     }
 
     public long quickSort(int[] arr) {
@@ -29,7 +22,7 @@ public class QuickSort {
     private void quickSort(int[] arr, int start, int end) {
         if (start >= end) return;
 
-        int pivotPos = partition(arr, start, end, Utils.generateRandomInclusive(start, end));
+        int pivotPos = partition(arr, start, end, randomPivot(start, end));
 
         quickSort(arr, start, pivotPos - 1);
         quickSort(arr, pivotPos + 1, end);
@@ -53,5 +46,9 @@ public class QuickSort {
         int t = arr[a];
         arr[a] = arr[b];
         arr[b] = t;
+    }
+
+    private static int randomPivot(int start, int end) {
+        return new SecureRandom().nextInt(end - start + 1) + start;
     }
 }
